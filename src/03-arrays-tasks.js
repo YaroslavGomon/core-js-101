@@ -540,10 +540,10 @@ function group(array, keySelector, valueSelector) {
   // throw new Error('Not implemented');
   const res = new Map();
   const keys = [...new Set(array.map(keySelector))];
-  const call = function (acc, val) {
+  function call(acc, val) {
     acc[val] = [val, array.filter((v) => keySelector(v) === val).map((v) => valueSelector(v))];
     return acc;
-  };
+  }
   keys.reduce(call, res);
   return Object.values(res);
 }
