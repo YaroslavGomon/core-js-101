@@ -276,8 +276,9 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  // throw new Error('Not implemented');
+  return arr.reduce((a, item, i) => a.concat(Array.from({ length: i + 1 }, () => item)), []);
 }
 
 /**
@@ -332,7 +333,18 @@ function getPositivesCount(arr) {
  */
 function sortDigitNamesByNumericOrder(arr) {
   // throw new Error('Not implemented');
-  const list = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const list = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
   return arr.sort((x, y) => list.indexOf(x) - list.indexOf(y));
 }
 
@@ -431,9 +443,9 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
-  // return arr.sort((x, y) => x.country.localeCompare(y.country));
+function sortCitiesArray(arr) {
+  // throw new Error('Not implemented');
+  return arr.sort((x, y) => x.country.localeCompare(y.country) || x.city.localeCompare(y.city));
 }
 
 /**
@@ -454,9 +466,10 @@ function sortCitiesArray(/* arr */) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
-  // return Array(n).fill(0).map((_, i) => Array(n).fill(0).map((val) => val[i] = 1));
+function getIdentityMatrix(n) {
+  // throw new Error('Not implemented');
+  const out = Array(n).fill(0);
+  return out.map((val, i) => Array(i).fill(0).concat([1].concat(Array(n - i - 1).fill(0))));
 }
 
 /**
@@ -472,8 +485,9 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  // throw new Error('Not implemented');
+  return [...Array(end - start + 1).keys()].map((val) => val + start);
 }
 
 /**
@@ -522,8 +536,16 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  // throw new Error('Not implemented');
+  const res = new Map();
+  const keys = [...new Set(array.map(keySelector))];
+  const call = function (acc, val) {
+    acc[val] = [val, array.filter((v) => keySelector(v) === val).map((v) => valueSelector(v))];
+    return acc;
+  };
+  keys.reduce(call, res);
+  return Object.values(res);
 }
 
 /**
@@ -539,8 +561,11 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  // throw new Error('Not implemented');
+  const res = [];
+  arr.map((val) => res.push(childrenSelector(val)));
+  return res.flat();
 }
 
 /**
@@ -555,8 +580,9 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  // throw new Error('Not implemented');
+  return indexes.reduce((acc, val) => acc[val], arr);
 }
 
 /**
@@ -582,9 +608,9 @@ function swapHeadAndTail(arr) {
   const len = arr.length / 2;
   let res;
   if (len % 2 === 0) {
-    res = [...arr.slice((len)), ...arr.slice(0, len)];
+    res = [...arr.slice(len), ...arr.slice(0, len)];
   } else if (len % 2 !== 0) {
-    res = [...arr.slice((len) + 1), arr[Math.floor(len)], ...arr.slice(0, len)];
+    res = [...arr.slice(len + 1), arr[Math.floor(len)], ...arr.slice(0, len)];
   }
   return res;
 }
