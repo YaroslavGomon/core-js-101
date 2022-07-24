@@ -193,7 +193,6 @@ function findFirstSingleChar(str) {
   // throw new Error('Not implemented');
   const res = {};
   for (let i = 0; i < str.length; i += 1) {
-    // res[str[i]] ? res[str[i]] += 1 : res[str[i]] = 1;
     if (res[str[i]]) {
       res[str[i]] += 1;
     } else {
@@ -227,8 +226,11 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  // throw new Error('Not implemented');
+  const min = Math.min(a, b);
+  const max = Math.max(a, b);
+  return `${isStartIncluded ? '[' : '('}${min}, ${max}${isEndIncluded ? ']' : ')'}`;
 }
 
 
@@ -244,8 +246,12 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  // throw new Error('Not implemented');
+  function rev(item, spl = ' ') {
+    return item.split(spl).reverse();
+  }
+  return rev(str).map((val) => rev(val, '').join('')).join(' ');
 }
 
 
@@ -261,8 +267,9 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  // throw new Error('Not implemented');
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -282,13 +289,22 @@ function reverseInteger(/* num */) {
  *   378282246310005  => true
  *   371449635398431  => true
  *
- *   4571234567890111 => false
+ *   4012888888881881 => false
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  // throw new Error('Not implemented');
+  const arr = ccn.toString().split('').reverse().map((val) => +val);
+  for (let i = 1; i < arr.length; i += 2) {
+    arr[i] *= 2;
+    if (arr[i] > 9) {
+      arr[i] = arr[i].toString().split('').reduce((acc, val) => +val + acc, 0);
+    }
+  }
+  return arr.reduce((acc, val) => acc + val, 0) % 10 === 0;
 }
+
 
 /**
  * Returns the digital root of integer:
@@ -304,8 +320,13 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  // throw new Error('Not implemented');
+  let res = num;
+  while (res > 9) {
+    res = res.toString().split('').reduce((acc, val) => +val + acc, 0);
+  }
+  return res;
 }
 
 
@@ -330,8 +351,25 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  // throw new Error('Not implemented');
+  const box = {
+    '{': '}',
+    '[': ']',
+    '<': '>',
+    '(': ')',
+  };
+  const arr = [];
+  let key;
+  for (let i = 0; i < str.length; i += 1) {
+    key = str[i];
+    if (box[key]) {
+      arr.push(key);
+    } else if (key !== box[arr.pop()]) {
+      return false;
+    }
+  }
+  return !arr.length;
 }
 
 
@@ -355,8 +393,9 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  // throw new Error('Not implemented');
+  return num.toString(n);
 }
 
 
@@ -374,6 +413,16 @@ function toNaryString(/* num, n */) {
  */
 function getCommonDirectoryPath(/* pathes */) {
   throw new Error('Not implemented');
+  // const res = {};
+  // const arr = pathes.flatMap((val) => val.split('/'));
+  // for (let i of arr) {
+  //   if (res[i]) {
+  //     res[i] += 1;
+  //   } else {
+  //     res[i] = 1;
+  //   }
+  // }
+  // return res;
 }
 
 
