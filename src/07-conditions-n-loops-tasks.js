@@ -489,8 +489,32 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  // throw new Error('Not implemented');
+  const arr = position.slice();
+  const fl = position.flat();
+  let line = [];
+
+  for (let i = 0; i < arr.length; i += 1) {
+    if (arr[i].length !== 3) arr[i].push(undefined);
+    if (arr[i].every((val) => val === arr[i][0])) line = arr[i];
+  }
+
+  const column1 = [fl[0], fl[3], fl[6]];
+  const column2 = [fl[1], fl[4], fl[7]];
+  const column3 = [fl[2], fl[5], fl[8]];
+  const diag1 = [fl[0], fl[4], fl[8]];
+  const diag2 = [fl[2], fl[4], fl[6]];
+
+  function eve(ar) {
+    if (ar.length !== 0) {
+      if (ar.every((val) => val === 'X') || ar.every((val) => val === '0')) {
+        return ar[0];
+      }
+    }
+    return undefined;
+  }
+  return eve(line) || eve(diag1) || eve(diag2) || eve(column1) || eve(column2) || eve(column3);
 }
 
 
